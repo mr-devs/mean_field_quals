@@ -11,7 +11,7 @@ def get_peak_day(infected_array):
     return np.where(np.array(infected_array) == max(infected_array))[0][0]
 
 
-def deriv_simple(beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k):
+def deriv_simple(beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k, counts=False, N=None):
     """
     Calculate the *change* in population for all six compartments in the scenario
     where we consider two populations — ordinary and misinformed — (and thus six
@@ -26,6 +26,8 @@ def deriv_simple(beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k):
     - inf_o (float) : proportion of the population infected (ordinary)
     - inf_m (float) : proportion of the population infected (misinformed)
     - k (inf)       : the rate of recovery (i.e., 1 / num days to recover)
+    - counts (bool) : if True, run the simulation based on a number of people
+    - N (int)       : size of the population to run with `counts`
 
     Returns
     -----------
@@ -37,20 +39,112 @@ def deriv_simple(beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k):
     - di_m : infected (misinformed)
     - dr_m : recovered (misinformed)
     """
-    # Ordinary folks first
-    ds_o = -beta_o * sus_o * (inf_o + inf_m)
-    di_o = (beta_o * sus_o * (inf_o + inf_m)) - k * inf_o
-    dr_o = k * inf_o
+    if not counts:
+        # Ordinary folks first
+        ds_o = -beta_o * sus_o * (inf_o + inf_m)
+        di_o = (beta_o * sus_o * (inf_o + inf_m)) - k * inf_o
+        dr_o = k * inf_o
 
-    # Misinfo folks next
-    ds_m = -beta_m * sus_m * (inf_o + inf_m)
-    di_m = (beta_m * sus_m * (inf_o + inf_m)) - k * inf_m
-    dr_m = k * inf_m
+        # Misinfo folks next
+        ds_m = -beta_m * sus_m * (inf_o + inf_m)
+        di_m = (beta_m * sus_m * (inf_o + inf_m)) - k * inf_m
+        dr_m = k * inf_m
+
+    else:
+        if N is None:
+            raise ValueError("`N` must be set with `counts = True`")
+
+        # Ordinary folks first
+        ds_o = (-beta_o * sus_o * (inf_o + inf_m)) / N
+        di_o = (((beta_o * sus_o * (inf_o + inf_m))) / N) - k * inf_o
+        dr_o = k * inf_o
+
+        # Misinfo folks next
+        ds_m = (-beta_m * sus_m * (inf_o + inf_m)) / N
+        di_m = (((beta_m * sus_m * (inf_o + inf_m))) / N) - k * inf_m
+        dr_m = k * inf_m
 
     return ds_o, di_o, dr_o, ds_m, di_m, dr_m
 
 
-def run_simulation(frac_ord, prop_infec, num_days, beta_ord, recovery_days, beta_mult):
+def deriv_with_homophily(
+    beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k, alpha, counts=False, N=None
+):
+    """
+    Calculate the *change* in population for all six compartments in the scenario
+    where we consider two populations — ordinary and misinformed — (and thus six
+    compartments), but no homophily.
+
+    Parameters:
+    -----------
+    - beta_o (float) : proportion of population infected (ordinary)
+    - beta_m (float) : proportion of the population infected (misinformed)
+    - sus_o (float)  : proportion of the population susceptible (ordinary)
+    - sus_m (float)  : proportion of the population susceptible (misinformed)
+    - inf_o (float)  : proportion of the population infected (ordinary)
+    - inf_m (float)  : proportion of the population infected (misinformed)
+    - k (inf)        : the rate of recovery (i.e., 1 / num days to recover)
+    - alpha (float)  : level of homophily. Must fall in range: .5 <= alpha <= 1
+    - counts (bool)  : if True, run the simulation based on a number of people
+    - N (int)        : size of the population to run with `counts`
+
+    Returns
+    -----------
+    The *change* in the population for...
+    - ds_o : susceptible (ordinary)
+    - di_o : infected (ordinary)
+    - dr_o : recovered (ordinary)
+    - ds_m : susceptible (misinformed)
+    - di_m : infected (misinformed)
+    - dr_m : recovered (misinformed)
+    """
+    if not (0.5 <= alpha <= 1):
+        raise ValueError("`alpha` must fall in the range [.5,1]")
+
+    if not counts:
+        # Ordinary folks first
+        ds_o = -2 * beta_o * sus_o * (inf_o * alpha + inf_m * (1 - alpha))
+        di_o = 2 * beta_o * sus_o * (inf_o * alpha + inf_m * (1 - alpha)) - k * inf_o
+        dr_o = k * inf_o
+
+        # Misinfo folks next
+        ds_m = -2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))
+        di_m = 2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha)) - k * inf_m
+        dr_m = k * inf_m
+
+    else:
+        if N is None:
+            raise ValueError("`N` must be set with `counts = True`")
+
+        # Ordinary folks first
+        ds_o = -2 * beta_o * sus_o * (inf_o * alpha + inf_m * (1 - alpha)) / N
+        di_o = (
+            (2 * beta_o * sus_o * (inf_o * alpha + inf_m * (1 - alpha))) / N
+        ) - k * inf_o
+        dr_o = k * inf_o
+
+        # Misinfo folks next
+        ds_m = (-2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))) / N
+        di_m = (
+            (2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))) / N
+        ) - k * inf_m
+        dr_m = k * inf_m
+
+    return ds_o, di_o, dr_o, ds_m, di_m, dr_m
+
+
+def run_simulation(
+    frac_ord,
+    prop_infec,
+    num_days,
+    beta_ord,
+    recovery_days,
+    beta_mult,
+    w_homophily,
+    alpha,
+    counts=False,
+    N=None,
+):
     """
     Run an SIR simulation for the indicated number of days based on the
     provided parameters.
@@ -69,6 +163,10 @@ def run_simulation(frac_ord, prop_infec, num_days, beta_ord, recovery_days, beta
         individuals. Beta_misinfo = 2*beta_ord
     - recovery_days (int) : the number of days it takes for individuals to recover
     - beta_mult (float/int) : how much to multiple beta_ord by to get beta_misinfo
+    - w_homophily (bool) : if True, use `deriv_with_homophily`. Else, use `deriv_simple`
+    - alpha (float)  : level of homophily. Must fall in range: .5 <= alpha <= 1
+    - counts (bool)  : if True, run the simulation based on a number of people
+    - N (int)        : size of the population to run with `counts`
     """
 
     eps = prop_infec
@@ -113,15 +211,31 @@ def run_simulation(frac_ord, prop_infec, num_days, beta_ord, recovery_days, beta
     for t in range(0, len(all_steps) - 1):
 
         # Calculate the change of each value
-        d_s_o, d_i_o, d_r_o, d_s_m, d_i_m, d_r_m = deriv_simple(
-            beta_o=B_o,
-            beta_m=B_m,
-            sus_o=S_o[t],
-            sus_m=S_m[t],
-            inf_o=I_o[t],
-            inf_m=I_m[t],
-            k=k,
-        )
+        if w_homophily:
+            d_s_o, d_i_o, d_r_o, d_s_m, d_i_m, d_r_m = deriv_with_homophily(
+                beta_o=B_o,
+                beta_m=B_m,
+                sus_o=S_o[t],
+                sus_m=S_m[t],
+                inf_o=I_o[t],
+                inf_m=I_m[t],
+                k=k,
+                alpha=alpha,
+                counts=counts,
+                N=N,
+            )
+        else:
+            d_s_o, d_i_o, d_r_o, d_s_m, d_i_m, d_r_m = deriv_simple(
+                beta_o=B_o,
+                beta_m=B_m,
+                sus_o=S_o[t],
+                sus_m=S_m[t],
+                inf_o=I_o[t],
+                inf_m=I_m[t],
+                k=k,
+                counts=counts,
+                N=N,
+            )
 
         # Ensure that the total change is zero because individuals should
         # simply be shifting between compartments
