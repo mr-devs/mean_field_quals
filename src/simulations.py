@@ -109,8 +109,8 @@ def deriv_with_homophily(
         dr_o = k * inf_o
 
         # Misinfo folks next
-        ds_m = -2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))
-        di_m = 2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha)) - k * inf_m
+        ds_m = -2 * beta_m * sus_m * (inf_o * (1 - alpha) + inf_m * alpha)
+        di_m = 2 * beta_m * sus_m * (inf_o * (1 - alpha) + inf_m * alpha) - k * inf_m
         dr_m = k * inf_m
 
     else:
@@ -125,9 +125,9 @@ def deriv_with_homophily(
         dr_o = k * inf_o
 
         # Misinfo folks next
-        ds_m = (-2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))) / N
+        ds_m = (-2 * beta_m * sus_m * (inf_o * (1 - alpha) + inf_m * alpha)) / N
         di_m = (
-            (2 * beta_m * sus_m * (inf_o * alpha + inf_m * (1 - alpha))) / N
+            (2 * beta_m * sus_m * (inf_o * (1 - alpha) + inf_m * alpha)) / N
         ) - k * inf_m
         dr_m = k * inf_m
 
