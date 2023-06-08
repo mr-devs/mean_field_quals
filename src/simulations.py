@@ -208,7 +208,7 @@ def run_simulation(
     # Setting beta values
     B_o = beta_ord
     B_m = B_o * beta_mult
-    B_m = 1 if B_m >= 1 else B_m
+    # B_m = 1 if B_m >= 1 else B_m
 
     # Get r0 values
     ord_r0 = B_o / k
@@ -218,7 +218,6 @@ def run_simulation(
     r0s = (ord_r0, mis_r0, weighted_avg_r0)
 
     for t in range(0, len(all_steps) - 1):
-
         # Calculate the change of each value
         if w_homophily:
             d_s_o, d_i_o, d_r_o, d_s_m, d_i_m, d_r_m = deriv_with_homophily(
