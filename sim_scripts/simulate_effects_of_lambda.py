@@ -1,6 +1,6 @@
 """
 Purpose:
-    Simulate the effects of varying lambda (lmbda = beta_m / beta_o).
+    Simulate the effects of varying lambda (lambda = beta_m / beta_o).
 
 Inputs:
     None
