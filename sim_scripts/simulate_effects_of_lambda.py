@@ -95,7 +95,7 @@ combined_infections = combined_infections.melt(id_vars="day")
 combined_infections.rename(columns={"variable": "lambda"}, inplace=True)
 combined_infections["group"] = "combined"
 
-# ----- Ordinate subpopulation -----
+# ----- Ordinary subpopulation -----
 infections_ord = pd.DataFrame(infection_flows_ord).reset_index()
 infections_ord = infections_ord.rename(columns={"index": "day"})
 infections_ord.day = infections_ord.day + 1
@@ -103,7 +103,7 @@ infections_ord = infections_ord.melt(id_vars="day")
 infections_ord.rename(columns={"variable": "lambda"}, inplace=True)
 infections_ord["group"] = "ordinary"
 
-# ----- Ordinate subpopulation -----
+# ----- Misinformed subpopulation -----
 infections_mis = pd.DataFrame(infection_flows_mis).reset_index()
 infections_mis = infections_mis.rename(columns={"index": "day"})
 infections_mis.day = infections_mis.day + 1
