@@ -39,7 +39,7 @@ lambdas = np.arange(1, 4.2, 0.2)  # beta_misinformed = lambda * beta_ord
 
 # Fixed based on results from previous analyses
 beta = 0.3
-rec_days = 7
+rec_days = 5
 
 # Result storage
 totals = []  # Total infections
@@ -115,5 +115,7 @@ infections_mis["group"] = "misinformed"
 by_day_results = pd.concat((infections_mis, infections_ord, combined_infections))
 
 ### Save results ###
-totals_df.to_csv(os.path.join(OUT_DIR, SUB_DIR, "total_infected.csv"), index=False)
-by_day_results.to_csv(os.path.join(OUT_DIR, SUB_DIR, "daily_infected.csv"), index=False)
+out_dir = os.path.join(OUT_DIR, SUB_DIR)
+os.makedirs(out_dir, exist_ok=True)
+totals_df.to_csv(os.path.join(out_dir, "total_infected.csv"), index=False)
+by_day_results.to_csv(os.path.join(out_dir, "daily_infected.csv"), index=False)

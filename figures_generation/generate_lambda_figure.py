@@ -12,7 +12,6 @@ Author:
     Matthew R. DeVerna
 """
 import os
-import sys
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -26,11 +25,6 @@ RESULTS_DIR = "../sim_results/effects_of_lambda"
 # Ensure we are in the data_analysis directory for paths to work
 if os.path.basename(os.getcwd()) != CURR_DIR:
     raise Exception(f"Must run this script from the `{CURR_DIR}` directory!")
-
-# Load simulation source code
-source_dir = "../src"
-sys.path.insert(0, source_dir)
-from simulations import run_simulation
 
 ### Load simulation results ###
 totals_df = pd.read_csv(os.path.join(RESULTS_DIR, "total_infected.csv"))
