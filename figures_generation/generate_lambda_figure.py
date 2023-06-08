@@ -148,6 +148,26 @@ ax1.legend(
 
 plt.tight_layout()
 
+plt.subplots_adjust(wspace=0.15)
+
+# Add subplot annotations
+ax1.annotate(
+    "(a)",
+    xy=(-0.15, 1),
+    xycoords=ax1.transAxes,
+    fontsize=14,
+    ha="center",
+    va="center",
+)
+ax4.annotate(
+    "(b)",
+    xy=(-0.1, 1),
+    xycoords=ax4.transAxes,
+    fontsize=14,
+    ha="center",
+    va="center",
+)
+
 # Save the plot
 plt.savefig(os.path.join(OUT_DIR, "mf_lambda_effect.pdf"), dpi=800)
 plt.savefig(os.path.join(OUT_DIR, "mf_lambda_effect.png"), dpi=800, transparent=True)

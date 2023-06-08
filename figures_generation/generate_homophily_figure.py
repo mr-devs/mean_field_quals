@@ -190,6 +190,26 @@ ax[1].set_xlabel("day")
 
 plt.tight_layout()
 
+plt.subplots_adjust(wspace=0.1)
+
+# Add subplot annotations
+ax[0].annotate(
+    "(a)",
+    xy=(-0.11, 1),
+    xycoords=ax[0].transAxes,
+    fontsize=14,
+    ha="center",
+    va="center",
+)
+ax[1].annotate(
+    "(b)",
+    xy=(-0.05, 1),
+    xycoords=ax[1].transAxes,
+    fontsize=14,
+    ha="center",
+    va="center",
+)
+
 # Save the plot
 plt.savefig(os.path.join(OUT_DIR, "mf_homophily_effect.pdf"), dpi=800)
 plt.savefig(os.path.join(OUT_DIR, "mf_homophily_effect.png"), dpi=800, transparent=True)
