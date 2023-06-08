@@ -73,9 +73,9 @@ for mult in less_ord["lambda"].unique():
 
 
 # Set the y-axis limits for the first column
-ax1.set_ylim(0, 0.5)
-ax2.set_ylim(0, 0.5)
-ax3.set_ylim(0, 0.5)
+ax1.set_ylim(0, 0.4)
+ax2.set_ylim(0, 0.4)
+ax3.set_ylim(0, 0.4)
 
 # Share y-axis limits for the first column
 ax2.sharey(ax1)
@@ -127,7 +127,7 @@ ax4.spines["left"].set_visible(False)
 ax4.spines["top"].set_visible(False)
 
 # Set labels for each subplot
-ax1.set_ylabel("ord. + misinfo.")
+ax1.set_ylabel("all")
 ax2.set_ylabel("proportion infected\n\nmisinformed")
 ax3.set_ylabel("ordinary")
 ax3.set_xlabel("day")
