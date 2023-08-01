@@ -33,7 +33,7 @@ daily_infection_df = pd.read_csv(os.path.join(RESULTS_DIR, "daily_infections.csv
 r0_df = pd.read_csv(os.path.join(RESULTS_DIR, "r0s.csv"))
 
 ### Set up some stuff for the figure ###
-rec_days = 7
+rec_days = 5
 
 # Set the font size for all text
 plt.rcParams.update({"font.size": 12})
@@ -77,7 +77,7 @@ ax1.spines["top"].set_visible(False)
 ax1.grid()
 
 ax1.set_xlim((0, 100))
-ax1.set_ylim((0, 0.7))
+ax1.set_ylim((0, 0.6))
 
 ax1.set_ylabel("proportion of population infected")
 ax1.set_xlabel("day")
@@ -102,7 +102,7 @@ x = 1 / rec_days
 y = 2
 ax2.plot([x, x], [0, y], color="red", linewidth=1)
 ax2.annotate(
-    r"$R_{0} = 1$ ($\beta = \frac{1}{7}$)",
+    r"$R_{0} = 1$ ($\beta = \frac{1}{5}$)",
     (x, y + 0.1),
     va="bottom",
     ha="center",
@@ -116,7 +116,7 @@ ax2.spines["left"].set_visible(False)
 ax2.spines["top"].set_visible(False)
 
 ax2.set_xlim((0, 1))
-ax2.set_ylim((0, 8))
+ax2.set_ylim((0, 6))
 
 ax2.grid()
 

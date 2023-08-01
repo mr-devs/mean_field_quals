@@ -38,7 +38,7 @@ from simulations import run_simulation
 frac_ord = 1  # No misinformed for initial simulations
 prop_infected = 0.001
 num_days = 100
-recovery_days = 7
+recovery_days = 5
 beta_mult = 1  # This doesn't really matter here
 homophily = False  # Not tested here
 alpha = 0.5  # Full mixing (homophily tested later)

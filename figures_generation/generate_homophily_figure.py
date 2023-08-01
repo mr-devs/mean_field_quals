@@ -159,8 +159,8 @@ arrow = patches.FancyArrowPatch(
 ax[1].add_patch(arrow)
 
 # Add an annotation above the arrow
-middle_x = 10
-middle_y = 0.35
+middle_x = 13
+middle_y = 0.275
 ax[1].annotate(
     "More\nhomophily",
     xy=(middle_x, middle_y),  # Annotation position (x, y)

@@ -38,7 +38,7 @@ from simulations import run_simulation
 num_days = 100
 x = 0.5  # Initial proportion of ordinary people
 prop_infected = 0.001  # Initial proportion of infected
-rec_days = 7
+rec_days = 5
 
 # Fixed based on results from previous analyses
 beta = 0.3
