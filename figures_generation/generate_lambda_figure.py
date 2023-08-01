@@ -38,7 +38,7 @@ less_mis = by_day_df[
     (by_day_df.group == "misinformed") & (by_day_df["lambda"].isin([1, 2, 3, 4]))
 ].copy()
 less_ord = by_day_df[
-    (by_day_df.group == "combined") & (by_day_df["lambda"].isin([1, 2, 3, 4]))
+    (by_day_df.group == "ordinary") & (by_day_df["lambda"].isin([1, 2, 3, 4]))
 ].copy()
 
 # Set the font size for all text
@@ -73,9 +73,9 @@ for mult in less_ord["lambda"].unique():
 
 
 # Set the y-axis limits for the first column
-ax1.set_ylim(0, 0.4)
-ax2.set_ylim(0, 0.4)
-ax3.set_ylim(0, 0.4)
+ax1.set_ylim(0, 0.42)
+ax2.set_ylim(0, 0.42)
+ax3.set_ylim(0, 0.42)
 
 # Share y-axis limits for the first column
 ax2.sharey(ax1)
