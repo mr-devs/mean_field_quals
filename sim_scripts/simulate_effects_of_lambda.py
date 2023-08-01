@@ -39,7 +39,7 @@ lambdas = np.arange(1, 4.2, 0.2)  # beta_misinformed = lambda * beta_ord
 
 # Fixed based on results from previous analyses
 beta = 0.3
-rec_days = 5
+rec_days = 7
 
 # Result storage
 totals = []  # Total infections

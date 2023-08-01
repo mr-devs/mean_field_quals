@@ -35,13 +35,13 @@ from simulations import run_simulation, get_peak_day
 
 
 ### SET SIMULATION PARAMETERS ###
-frac_ord = 1 # No misinformed for initial simulations
-prop_infected = .001
+frac_ord = 1  # No misinformed for initial simulations
+prop_infected = 0.001
 num_days = 100
-recovery_days = 5 # recovery rate gamma = .2 where recovery days = 1/.2 = 5
-beta_mult = 1 # this doesn't really matter here
-homophily = False # not tested here
-alpha = None # full mixing (homophily tested later)
+recovery_days = 5  # recovery rate gamma = .2 where recovery days = 1/.2 = 5
+beta_mult = 1  # this doesn't really matter here
+homophily = False  # not tested here
+alpha = None  # full mixing (homophily tested later)
 
 # Will store the progression of infections over time, indexed by beta values
 # Storage
@@ -50,13 +50,12 @@ peak_records = []
 daily_infection_records = []
 
 # We fix beta at .3 based on the above
-beta= .3
+beta = 0.3
 
 # Simulate across various recovery periods
-recovery_days = np.arange(1,21,1)
+recovery_days = np.arange(1, 21, 1)
 for rec_days in recovery_days:
-
-    # Run the simulation based on the input 
+    # Run the simulation based on the input
     S_o, S_m, I_o, I_m, R_o, R_m, r0s = run_simulation(
         frac_ord=frac_ord,
         prop_infec=prop_infected,
@@ -65,26 +64,18 @@ for rec_days in recovery_days:
         recovery_days=rec_days,
         beta_mult=beta_mult,
         w_homophily=homophily,
-        alpha=None
+        alpha=None,
     )
-    
+
     # Below r0s = (r0_ord, r0_mis, r0_weighted)
     # All are identical in this simulation
-    r0_records.append({
-        "recovery" : rec_days,
-        "r0" : r0s[0]
-    })
-    peak_records.append({
-        "recovery": rec_days,
-        "peak_day" : get_peak_day(I_o)
-    })
-    
+    r0_records.append({"recovery": rec_days, "r0": r0s[0]})
+    peak_records.append({"recovery": rec_days, "peak_day": get_peak_day(I_o)})
+
     for day, prop in enumerate(I_o):
-        daily_infection_records.append({
-            "recovery":rec_days,
-            "day":day,
-            "prop_infected": prop
-        })
+        daily_infection_records.append(
+            {"recovery": rec_days, "day": day, "prop_infected": prop}
+        )
 
 # Convert to dfs
 r0_df = pd.DataFrame.from_records(r0_records)
