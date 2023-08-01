@@ -7,8 +7,11 @@ import numpy as np
 
 
 def get_peak_day(infected_array):
-    """Return the day on which their was the highest level of infection"""
-    return np.where(np.array(infected_array) == max(infected_array))[0][0]
+    """
+    Return the day on which the highest level of infection occurred.
+    Function finds the max value, returns the index of that value, and adds 1.
+    """
+    return np.where(np.array(infected_array) == max(infected_array))[0][0] + 1
 
 
 def deriv_simple(beta_o, beta_m, sus_o, sus_m, inf_o, inf_m, k, counts=False, N=None):
