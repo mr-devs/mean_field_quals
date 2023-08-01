@@ -248,7 +248,7 @@ def run_simulation(
         # Ensure that the total change is zero because individuals should
         # simply be shifting between compartments
         total_change = d_s_o + d_s_m + d_i_o + d_i_m + d_r_o + d_r_m
-        # assert np.allclose(total_change, 0), f"{total_change}"
+        assert np.allclose(total_change, 0), f"{total_change}"
 
         # Set the next value as the current plus it's change
         S_o[t + 1] = S_o[t] + d_s_o
