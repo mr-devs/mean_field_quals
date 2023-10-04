@@ -35,7 +35,8 @@ from simulations import run_simulation
 num_days = 100
 x = 0.5  # Initial proportion of ordinary people
 prop_infected = 0.001  # Initial proportion of infected
-lambdas = np.arange(1, 4.2, 0.2)  # beta_misinformed = lambda * beta_ord
+lambdas = np.arange(1, 3.2, 0.2)  # beta_misinformed = lambda * beta_ord
+lambdas = np.append(lambdas, 3.33)
 
 # Fixed based on results from previous analyses
 beta = 0.3

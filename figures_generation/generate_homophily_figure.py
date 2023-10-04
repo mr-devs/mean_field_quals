@@ -194,18 +194,20 @@ plt.subplots_adjust(wspace=0.1)
 
 # Add subplot annotations
 ax[0].annotate(
-    "(a)",
+    "A",
     xy=(-0.11, 1),
     xycoords=ax[0].transAxes,
     fontsize=14,
+    fontweight="bold",
     ha="center",
     va="center",
 )
 ax[1].annotate(
-    "(b)",
+    "B",
     xy=(-0.05, 1),
     xycoords=ax[1].transAxes,
     fontsize=14,
+    fontweight="bold",
     ha="center",
     va="center",
 )

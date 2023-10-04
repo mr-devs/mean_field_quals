@@ -23,6 +23,8 @@ import pandas as pd
 OUT_DIR = "../figures"
 CURR_DIR = "stats_scripts"
 RESULTS_DIR = "../sim_results/effects_of_lambda"
+MAX_LAMBDA = 3.0
+
 # Ensure we are in the data_analysis directory for paths to work
 if os.path.basename(os.getcwd()) != CURR_DIR:
     raise Exception(f"Must run this script from the `{CURR_DIR}` directory!")
@@ -43,25 +45,32 @@ by_day_df = pd.read_csv(os.path.join(RESULTS_DIR, "daily_infected.csv"))
 
 print("VARYING LAMBDA")
 print("-" * 50)
+total_max_only = totals_df.loc[np.isclose(totals_df["lambda"], MAX_LAMBDA)]
 print(
-    f"Total extra infections incurred by misinformed group (vs. ordinary): {totals_df['diff'].max() : .1%}"
+    f"Total extra infections incurred by misinformed group (vs. ordinary): {total_max_only['diff'].max() : .1%}"
 )
 print(
-    f"Total extra infections incurred by network (lambda 1 vs lambda 4): {totals_df['total_extra'].max() : .1%}"
+    f"Total extra infections incurred by network (lambda 1 vs lambda {MAX_LAMBDA}): {total_max_only['total_extra'].max() : .1%}"
 )
 for group in ["misinformed", "ordinary"]:
-    temp_slice = by_day_df[(by_day_df["lambda"] == 4) & (by_day_df["group"] == group)]
+    temp_slice = by_day_df[
+        (np.isclose(by_day_df["lambda"], MAX_LAMBDA)) & (by_day_df["group"] == group)
+    ]
+
     peak_day = get_peak_day(temp_slice["value"])
-    print(f"Peak day for {group} group: {peak_day}")
+    print(f"Peak day for {group} group: {peak_day} (lambda = {MAX_LAMBDA})")
 
 # 'combined' here means "the entire network"
 combined_by_day = by_day_df[by_day_df["group"] == "combined"].reset_index(drop=True)
-lambda4 = combined_by_day[combined_by_day["lambda"] == 4]
-lambda1 = combined_by_day[combined_by_day["lambda"] == 1]
+combined_max_lambda = combined_by_day[combined_by_day["lambda"] == MAX_LAMBDA]
+comb_lambda1 = combined_by_day[combined_by_day["lambda"] == 1]
 
-lambda4_peak_day = get_peak_day(lambda4["value"])
-lambda1_peak_day = get_peak_day(lambda1["value"])
+comb_max_lambda_peak_day = get_peak_day(combined_max_lambda["value"])
+comb_lambda1_peak_day = get_peak_day(comb_lambda1["value"])
 
-print(f"Network peak, lambda = 4: {lambda4_peak_day} days")
-print(f"Network peak, lambda = 1: {lambda1_peak_day} days")
-print(f"Network peak, difference: {lambda1_peak_day - lambda4_peak_day} days")
+net_peak_str = "Network peak (misinformed + ordinary)"
+print(f"{net_peak_str}, lambda = {MAX_LAMBDA}: {comb_max_lambda_peak_day} days")
+print(f"{net_peak_str}, lambda = 1: {comb_lambda1_peak_day} days")
+print(
+    f"{net_peak_str}, difference: {comb_lambda1_peak_day - comb_max_lambda_peak_day} days"
+)

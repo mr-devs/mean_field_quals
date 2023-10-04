@@ -46,6 +46,7 @@ plt.rcParams.update({"font.size": 12})
 
 # Create color map based on Tableu10 found here: https://vega.github.io/vega/docs/schemes/
 color_map = {1: "#4c78a8", 2: "#f58518", 3: "#e45756", 4: "#72b7b2"}
+line_map = {1: "dotted", 2: "dashed", 3: "solid", 4: "#dashdot"}
 
 # Create the figure and grid layout
 fig = plt.figure(figsize=(10, 6))
@@ -59,17 +60,35 @@ ax3 = plt.subplot(grid[2, 0])
 ## Combined figure
 for mult in less_combined["lambda"].unique():
     temp_df = less_combined[less_combined["lambda"] == mult]
-    ax1.plot(temp_df["day"], temp_df["value"], color=color_map[mult], label=int(mult))
+    ax1.plot(
+        temp_df["day"],
+        temp_df["value"],
+        color=color_map[mult],
+        label=int(mult),
+        linestyle=line_map[mult],
+    )
 
 ## Misinformed figure
 for mult in less_mis["lambda"].unique():
     temp_df = less_mis[less_mis["lambda"] == mult]
-    ax2.plot(temp_df["day"], temp_df["value"], color=color_map[mult], label=int(mult))
+    ax2.plot(
+        temp_df["day"],
+        temp_df["value"],
+        color=color_map[mult],
+        label=int(mult),
+        linestyle=line_map[mult],
+    )
 
 ## Ordinary figure
 for mult in less_ord["lambda"].unique():
     temp_df = less_ord[less_ord["lambda"] == mult]
-    ax3.plot(temp_df["day"], temp_df["value"], color=color_map[mult], label=int(mult))
+    ax3.plot(
+        temp_df["day"],
+        temp_df["value"],
+        color=color_map[mult],
+        label=int(mult),
+        linestyle=line_map[mult],
+    )
 
 
 # Set the y-axis limits for the first column
@@ -152,18 +171,20 @@ plt.subplots_adjust(wspace=0.15)
 
 # Add subplot annotations
 ax1.annotate(
-    "(a)",
+    "A",
     xy=(-0.15, 1),
     xycoords=ax1.transAxes,
     fontsize=14,
+    fontweight="bold",
     ha="center",
     va="center",
 )
 ax4.annotate(
-    "(b)",
+    "B",
     xy=(-0.1, 1),
     xycoords=ax4.transAxes,
     fontsize=14,
+    fontweight="bold",
     ha="center",
     va="center",
 )
