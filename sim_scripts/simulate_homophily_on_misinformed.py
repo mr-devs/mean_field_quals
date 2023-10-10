@@ -48,13 +48,13 @@ beta = 0.15
 lambduh = 3  # beta_misinformed = lambda * beta_ord
 
 # Homophily
-alphas = np.arange(0.5, 1.01, 0.1)
+alphas = np.arange(0.5, 1.01, 0.05)
 
 # Result storage
 totals = []  # Total infections
 infection_flows = dict()  # Daily infections
 
-betas = np.arange(0.1, 0.41, 0.04)
+betas = np.arange(0.1, 0.41, 0.01)
 
 # Run simulations
 for beta in betas:
