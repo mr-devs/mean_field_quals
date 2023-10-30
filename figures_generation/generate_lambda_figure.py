@@ -179,7 +179,7 @@ ax2.set_ylabel("proportion infected\n\nmisinformed")
 ax3.set_ylabel("ordinary")
 ax3.set_xlabel("day")
 ax4.set_ylabel(
-    "proportion of extra infections with two subpopulations", rotation=-90, va="bottom"
+    "proportion of extra infections due to misinformed", rotation=-90, va="bottom"
 )
 ax4.set_xlabel("$\lambda$")
 
