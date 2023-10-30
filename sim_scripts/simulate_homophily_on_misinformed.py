@@ -25,6 +25,7 @@ import sys
 import numpy as np
 import pandas as pd
 
+MIXED = True
 OUT_DIR = "../sim_results"
 SUB_DIR = "effects_of_homophily_on_misinformed"
 CURR_DIR = "sim_scripts"
@@ -69,7 +70,7 @@ for beta in betas:
             beta_mult=lambduh,
             w_homophily=True,
             alpha=alpha,
-            mixed=False,
+            mixed=MIXED,
         )
 
         total_ord_inf = max(R_o)
@@ -101,5 +102,10 @@ daily_infected_df.rename(columns={"value": "prop_infected"}, inplace=True)
 ### Save results ###
 out_dir = os.path.join(OUT_DIR, SUB_DIR)
 os.makedirs(out_dir, exist_ok=True)
-total_infected_df.to_csv(os.path.join(out_dir, "total_infected.csv"), index=False)
-daily_infected_df.to_csv(os.path.join(out_dir, "daily_infected.csv"), index=False)
+mixed_str = "_mixed" if MIXED else ""
+total_infected_df.to_csv(
+    os.path.join(out_dir, f"total_infected{mixed_str}.csv"), index=False
+)
+daily_infected_df.to_csv(
+    os.path.join(out_dir, f"daily_infected{mixed_str}.csv"), index=False
+)

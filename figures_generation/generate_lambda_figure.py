@@ -12,6 +12,7 @@ Author:
     Matthew R. DeVerna
 """
 import os
+import sys
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -26,10 +27,14 @@ RESULTS_DIR = "../sim_results/effects_of_lambda"
 if os.path.basename(os.getcwd()) != CURR_DIR:
     raise Exception(f"Must run this script from the `{CURR_DIR}` directory!")
 
+# Load simulation source code
+source_dir = "../src"
+sys.path.insert(0, source_dir)
+from simulations import get_peak_day
+
 ### Load simulation results ###
 totals_df = pd.read_csv(os.path.join(RESULTS_DIR, "total_infected.csv"))
 by_day_df = pd.read_csv(os.path.join(RESULTS_DIR, "daily_infected.csv"))
-
 
 less_combined = by_day_df[
     (by_day_df.group == "combined") & (by_day_df["lambda"].isin([1, 2, 3, 4]))
@@ -40,6 +45,15 @@ less_mis = by_day_df[
 less_ord = by_day_df[
     (by_day_df.group == "ordinary") & (by_day_df["lambda"].isin([1, 2, 3, 4]))
 ].copy()
+
+y_buffer = 0.02
+peaks_dict = {}
+for val in [1, 2, 3]:
+    temp_df = less_combined[less_combined["lambda"] == val]
+    peaks_dict[val] = {
+        "x": get_peak_day(temp_df["value"]),
+        "y": temp_df["value"].max() + y_buffer,
+    }
 
 # Set the font size for all text
 plt.rcParams.update({"font.size": 12})
@@ -67,6 +81,20 @@ for mult in less_combined["lambda"].unique():
         label=int(mult),
         linestyle=line_map[mult],
     )
+    if mult in [1, 3]:
+        ax1.vlines(
+            x=peaks_dict[mult]["x"],
+            ymin=0,
+            ymax=peaks_dict[mult]["y"],
+            color="black",
+            linewidth=1,
+        )
+        ax1.annotate(
+            text=f"{peaks_dict[mult]['y']:.2f} (day {peaks_dict[mult]['x']})",
+            xy=(peaks_dict[mult]["x"], peaks_dict[mult]["y"] + 0.01),
+            color="black",
+            ha="center",
+        )
 
 ## Misinformed figure
 for mult in less_mis["lambda"].unique():

@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-
+MIXED = True
 OUT_DIR = "../figures"
 CURR_DIR = "figures_generation"
 RESULTS_DIR = "../sim_results/effects_of_homophily_on_misinformed"
@@ -32,7 +32,10 @@ source_dir = "../src"
 sys.path.insert(0, source_dir)
 
 ### Load simulation results ###
-total_infected_df = pd.read_csv(os.path.join(RESULTS_DIR, "total_infected.csv"))
+mixed_str = "_mixed" if MIXED else ""
+total_infected_df = pd.read_csv(
+    os.path.join(RESULTS_DIR, f"total_infected{mixed_str}.csv")
+)
 
 total_infected_df = total_infected_df.rename(
     columns={
@@ -93,9 +96,11 @@ ax[0].legend()
 plt.tight_layout()
 
 # Save the plot
-plt.savefig(os.path.join(OUT_DIR, "mf_homophiliy_misinformed_effect.pdf"), dpi=800)
 plt.savefig(
-    os.path.join(OUT_DIR, "mf_homophiliy_misinformed_effect.png"),
+    os.path.join(OUT_DIR, f"mf_homophiliy_misinformed_effect{mixed_str}.pdf"), dpi=800
+)
+plt.savefig(
+    os.path.join(OUT_DIR, f"mf_homophiliy_misinformed_effect{mixed_str}.png"),
     dpi=800,
     transparent=True,
 )

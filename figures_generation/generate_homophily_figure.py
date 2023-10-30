@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-
+MIXED = True
 OUT_DIR = "../figures"
 CURR_DIR = "figures_generation"
 RESULTS_DIR = "../sim_results/effects_of_homophily"
@@ -33,8 +33,13 @@ sys.path.insert(0, source_dir)
 from simulations import get_peak_day
 
 ### Load simulation results ###
-total_infected_df = pd.read_csv(os.path.join(RESULTS_DIR, "total_infected.csv"))
-daily_infected_df = pd.read_csv(os.path.join(RESULTS_DIR, "daily_infected.csv"))
+mixed_str = "_mixed" if MIXED else ""
+total_infected_df = pd.read_csv(
+    os.path.join(RESULTS_DIR, f"total_infected{mixed_str}.csv")
+)
+daily_infected_df = pd.read_csv(
+    os.path.join(RESULTS_DIR, f"daily_infected{mixed_str}.csv")
+)
 
 # Set the font size for all text
 plt.rcParams.update({"font.size": 12})
@@ -172,7 +177,8 @@ ax[1].annotate(
 )
 
 ax[1].set_ylim(0, 0.4)
-ax[1].set_xlim(0, 60)
+ax[1].set_xlim(0, 100)
+ax[0].set_ylim(0.25, 1.01)
 ax[0].set_xlim(0.49, 1.01)
 
 ax[1].grid(True)
@@ -213,5 +219,9 @@ ax[1].annotate(
 )
 
 # Save the plot
-plt.savefig(os.path.join(OUT_DIR, "mf_homophily_effect.pdf"), dpi=800)
-plt.savefig(os.path.join(OUT_DIR, "mf_homophily_effect.png"), dpi=800, transparent=True)
+plt.savefig(os.path.join(OUT_DIR, f"mf_homophily_effect{mixed_str}.pdf"), dpi=800)
+plt.savefig(
+    os.path.join(OUT_DIR, f"mf_homophily_effect{mixed_str}.png"),
+    dpi=800,
+    transparent=True,
+)
