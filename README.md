@@ -2,8 +2,9 @@
 A repo for the mean-field SIR simulations related to my qualifications exam.
 
 ### Folders:
-- `figures/`
-- `figures_generation/`
+- `environment/`: code for setting up the Python environment
+- `figures/`: figures for the paper
+- `figures_generation/`: scripts that generate the figures
 - `notebooks/` : contains working notebooks
 - `sim_results/`: results of simulations run in `sim_scripts`
 - `sim_scripts/`: simulation scripts
