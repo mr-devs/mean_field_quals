@@ -4,7 +4,7 @@ Scripts and files saved here were/can be used to generate the Python environment
 
 ### Environment files
 As [`conda`](https://docs.conda.io/projects/conda/en/latest/index.html) can be finicky generating environments across machines, we create environment files in various ways.
-- `env_cgpmean_fieldl`: generated in the standard way but may not work with different machines
+- `env_mean_field.yml`: generated in the standard way but may not work with different machines
 - `env_explicit_mean_field.txt`: meant to be explicit about which conda versions are utilized
 - `env_from_history_mean_field.yml`: according to [condas documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#exporting-an-environment-file-across-platforms), this is meant to be the most robust YAML file to work across different types of machines.
 
