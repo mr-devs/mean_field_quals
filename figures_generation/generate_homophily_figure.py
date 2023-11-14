@@ -219,6 +219,7 @@ ax[1].annotate(
 )
 
 # Save the plot
+os.makedirs(OUT_DIR, exist_ok=True)
 plt.savefig(os.path.join(OUT_DIR, f"mf_homophily_effect{mixed_str}.pdf"), dpi=800)
 plt.savefig(
     os.path.join(OUT_DIR, f"mf_homophily_effect{mixed_str}.png"),

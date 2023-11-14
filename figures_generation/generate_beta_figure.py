@@ -190,5 +190,6 @@ ax3.annotate(
 )
 
 # Save the plot
+os.makedirs(OUT_DIR, exist_ok=True)
 plt.savefig(os.path.join(OUT_DIR, "mf_beta_effect.pdf"), dpi=800)
 plt.savefig(os.path.join(OUT_DIR, "mf_beta_effect.png"), dpi=800, transparent=True)

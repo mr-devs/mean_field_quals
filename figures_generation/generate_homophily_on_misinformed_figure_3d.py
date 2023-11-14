@@ -148,13 +148,14 @@ ax2.yaxis.set_ticks(ticks, ticks)
 ax3.yaxis.set_ticks(ticks, ticks)
 
 # Save the plot
+os.makedirs(OUT_DIR, exist_ok=True)
 plt.savefig(
-    f"../figures/mf_homophiliy_misinformed_effect_3d{mixed_str}.pdf",
+    os.path.join(OUT_DIR, f"mf_homophiliy_misinformed_effect_3d{mixed_str}.pdf"),
     dpi=800,
     bbox_inches="tight",
 )
 plt.savefig(
-    f"../figures/mf_homophiliy_misinformed_effect_3d{mixed_str}.png",
+    os.path.join(OUT_DIR, f"mf_homophiliy_misinformed_effect_3d{mixed_str}.png"),
     dpi=800,
     bbox_inches="tight",
 )

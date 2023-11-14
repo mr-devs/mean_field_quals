@@ -218,5 +218,6 @@ ax4.annotate(
 )
 
 # Save the plot
+os.makedirs(OUT_DIR, exist_ok=True)
 plt.savefig(os.path.join(OUT_DIR, "mf_lambda_effect.pdf"), dpi=800)
 plt.savefig(os.path.join(OUT_DIR, "mf_lambda_effect.png"), dpi=800, transparent=True)

@@ -54,54 +54,43 @@ ax2 = plt.subplot(grid[0, 1])
 ax3 = plt.subplot(grid[1, 1])
 
 for rec_day in color_map.keys():
-    selected_df = daily_infection_df[daily_infection_df['recovery']==rec_day]
-    
+    selected_df = daily_infection_df[daily_infection_df["recovery"] == rec_day]
+
     ax1.plot(
-        selected_df['day'],
-        selected_df['prop_infected'],
-        color = color_map[rec_day],
-        label = rec_day
+        selected_df["day"],
+        selected_df["prop_infected"],
+        color=color_map[rec_day],
+        label=rec_day,
     )
-    
+
 ax1.spines["right"].set_visible(False)
 ax1.spines["top"].set_visible(False)
 
 ax1.grid()
 
-ax1.set_xlim((0,100))
-ax1.set_ylim((0,.6))
+ax1.set_xlim((0, 100))
+ax1.set_ylim((0, 0.6))
 
 ax1.set_ylabel("proportion of population infected")
 ax1.set_xlabel("day")
 
-ax2.yaxis.set_ticks([1,2,3,4,5,6], [1,2,3,4,5,6])
+ax2.yaxis.set_ticks([1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6])
 
 ax2.plot(
-    r0_df['recovery'],
-    r0_df['r0'],
-    color='black',
+    r0_df["recovery"],
+    r0_df["r0"],
+    color="black",
     linewidth=1,
 )
 ax2.scatter(
-    r0_df['recovery'],
-    r0_df['r0'],
-    color='black',
+    r0_df["recovery"],
+    r0_df["r0"],
+    color="black",
     s=5,
 )
 
-ax2.plot(
-    [3.3,3.3],
-    [0,1.5],
-    color='red',
-    linewidth=1
-)
-ax2.annotate(
-    r"$R_{0} = 1$",
-    (3.3,1.55),
-    va='bottom',
-    ha='center',
-    fontsize=10
-)
+ax2.plot([3.3, 3.3], [0, 1.5], color="red", linewidth=1)
+ax2.annotate(r"$R_{0} = 1$", (3.3, 1.55), va="bottom", ha="center", fontsize=10)
 
 ax2.yaxis.tick_right()
 ax2.yaxis.set_label_position("right")
@@ -109,34 +98,25 @@ ax2.yaxis.set_label_position("right")
 ax2.spines["left"].set_visible(False)
 ax2.spines["top"].set_visible(False)
 
-ax2.set_xlim((0,21))
-ax2.set_ylim((0,6))
+ax2.set_xlim((0, 21))
+ax2.set_ylim((0, 6))
 
 ax2.grid()
 
 ax2.xaxis.set_ticklabels([])
 ax2.xaxis.set_tick_params(length=0)
 
-ax2.set_ylabel(r"$R_{0}$", rotation=270, va='bottom')
+ax2.set_ylabel(r"$R_{0}$", rotation=270, va="bottom")
 
-ax3.plot(
-    peak_day_df['recovery'],
-    peak_day_df['peak_day'],
-    color='black'
-)
+ax3.plot(peak_day_df["recovery"], peak_day_df["peak_day"], color="black")
 ax3.scatter(
-    peak_day_df['recovery'],
-    peak_day_df['peak_day'],
-    color='black',
+    peak_day_df["recovery"],
+    peak_day_df["peak_day"],
+    color="black",
     s=5,
 )
 
-ax3.plot(
-    [3.3,3.3],
-    [0,100],
-    color='red',
-    linewidth=1
-)
+ax3.plot([3.3, 3.3], [0, 100], color="red", linewidth=1)
 
 ax3.grid()
 
@@ -148,10 +128,10 @@ ax3.yaxis.set_label_position("right")
 ax3.spines["left"].set_visible(False)
 ax3.spines["top"].set_visible(False)
 
-ax3.set_xlim((0,21))
-ax3.set_ylim((-1,100))
+ax3.set_xlim((0, 21))
+ax3.set_ylim((-1, 100))
 
-ax3.set_ylabel("peak infection day", rotation=270, va='bottom')
+ax3.set_ylabel("peak infection day", rotation=270, va="bottom")
 
 
 # Add a legend above the top left panel
@@ -165,7 +145,7 @@ ax1.legend(
 
 ax1.annotate(
     "(a)",
-    xy=(-0.15, .975),
+    xy=(-0.15, 0.975),
     xycoords=ax1.transAxes,
     fontsize=14,
     ha="center",
@@ -173,7 +153,7 @@ ax1.annotate(
 )
 ax2.annotate(
     "(b)",
-    xy=(-0.07, .95),
+    xy=(-0.07, 0.95),
     xycoords=ax2.transAxes,
     fontsize=14,
     ha="center",
@@ -181,7 +161,7 @@ ax2.annotate(
 )
 ax3.annotate(
     "(c)",
-    xy=(-0.07, .95),
+    xy=(-0.07, 0.95),
     xycoords=ax3.transAxes,
     fontsize=14,
     ha="center",
@@ -189,5 +169,6 @@ ax3.annotate(
 )
 
 # Save the plot
+os.makedirs(OUT_DIR, exist_ok=True)
 plt.savefig(os.path.join(OUT_DIR, "mf_tau_effect.pdf"), dpi=800)
 plt.savefig(os.path.join(OUT_DIR, "mf_tau_effect.png"), dpi=800, transparent=True)
