@@ -76,7 +76,7 @@ def deriv_with_homophily(
     """
     Calculate the *change* in population for all six compartments in the scenario
     where we consider two populations — ordinary and misinformed — (and thus six
-    compartments), but no homophily.
+    compartments), also accounting for homophily.
 
     Parameters:
     -----------
@@ -102,8 +102,7 @@ def deriv_with_homophily(
     - dr_m : recovered (misinformed)
     """
     if not (0.5 <= np.round(alpha, 2) <= 1):
-        print(alpha)
-        raise ValueError("`alpha` must fall in the range [.5,1]")
+        raise ValueError(f"`alpha` must fall in the range [.5,1]. Alpha = {alpha}")
 
     if not counts:
         # Ordinary folks first
@@ -154,9 +153,6 @@ def run_simulation(
     Run an SIR simulation for the indicated number of days based on the
     provided parameters.
 
-    NOTE: beta_misinformed always considered to be 2x that of beta_oridiary
-        but has a ceiling value of 1.
-
     Parameters:
     -----------
     - frac_ord (float) : the proportion of the population made up of "ordinary"
@@ -165,7 +161,7 @@ def run_simulation(
         as infected. This is a subgroup of the misinformed individuals
     - num_days (int) : the number of days to run the simulation for
     - beta_ord (float) : the probability of disease transmission for the ordinary
-        individuals. Beta_misinfo = 2*beta_ord
+        individuals.
     - recovery_days (int) : the number of days it takes for individuals to recover
     - beta_mult (float/int) : how much to multiple beta_ord by to get beta_misinfo
     - w_homophily (bool) : if True, use `deriv_with_homophily`. Else, use `deriv_simple`
@@ -189,17 +185,22 @@ def run_simulation(
     R_o = np.zeros(len(all_steps))
     R_m = np.zeros(len(all_steps))
 
-    # These have unique values for the first time step
-
+    ### Set up the initial conditions
+    # If mixed, infect both groups equally
     if mixed:
         S_o[0] = x - (eps / 2)
         S_m[0] = 1 - x - (eps / 2)
         I_o[0] = eps / 2
         I_m[0] = eps / 2
+
+    # Otherwise we only infect one group
     else:
+        # If we only have ordinary folks, we must infect the ordinary group
         if x == 1:
             S_o[0] = x - eps
             I_o[0] = eps
+
+        # Otherwise, we infect the misinformed group
         else:
             S_o[0] = x
             S_m[0] = 1 - x - eps
@@ -211,7 +212,7 @@ def run_simulation(
     # Setting beta values
     B_o = beta_ord
     B_m = B_o * beta_mult
-    B_m = 1 if B_m >= 1 else B_m
+    # B_m = 1 if B_m >= 1 else B_m
 
     # Get r0 values
     ord_r0 = B_o / k
